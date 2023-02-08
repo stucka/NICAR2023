@@ -17,6 +17,7 @@ library(readxl)
 
 # In this script we use a 1.6 MB random sample of the 2021 990 file.
 # It's impractical to use the Business Master File in a classroom setting, so we won't be able to identify individual nonprofits.
+# Technique for joining Business Master File to statistical data is shown at bottom of file.
 
 # import random sample of financial data from 2021 Form 990s
 Extract990_2021 <- ("Extract990_2021.xlsx")
