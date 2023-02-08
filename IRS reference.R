@@ -107,3 +107,15 @@ colnames(Postcard)[26] <- 'DBA3'
 Postcard <- Postcard %>% 
   mutate(FYBegin = mdy(FYBegin),
          FYEnd = mdy(FYEnd))
+
+# import Exempt Organization Business Master File - four regional files, total size 325 MB.
+BizFile1 <- read_csv("https://www.irs.gov/pub/irs-soi/eo1.csv", col_types = "cccccccccccncccccncccccnnncc")
+BizFile2 <- read_csv("https://www.irs.gov/pub/irs-soi/eo2.csv", col_types = "cccccccccccncccccncccccnnncc")
+BizFile3 <- read_csv("https://www.irs.gov/pub/irs-soi/eo3.csv", col_types = "cccccccccccncccccncccccnnncc")
+BizFile4 <- read_csv("https://www.irs.gov/pub/irs-soi/eo4.csv", col_types = "cccccccccccncccccncccccnnncc")
+
+BizFileAll <- rbind(BizFile1,
+                    BizFile2,
+                    BizFile3,
+                    BizFile4)
+
