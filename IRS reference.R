@@ -11,7 +11,7 @@ library(tidyverse)
 library(httr)
 library(lubridate)
 
-# import Publication 78 list of orgs that can accept tax-deductible contributions
+# import Publication 78 list of orgs that can accept tax-deductible contributions; size is 90 MB.
 temp1 <- tempfile()
 download.file("https://apps.irs.gov/pub/epostcard/data-download-pub78.zip", temp1, 
               mode = "wb")
@@ -31,7 +31,7 @@ colnames(Charities)[4] <- 'State'
 colnames(Charities)[5] <- 'Country'
 colnames(Charities)[6] <- 'Type'
 
-# import list of nonprofits that lost their tax-exempt status
+# import list of nonprofits that lost their tax-exempt status; size is 120 MB.
 temp2 <- tempfile()
 download.file("https://apps.irs.gov/pub/epostcard/data-download-revocation.zip", 
               temp2, mode = "wb")
@@ -63,3 +63,47 @@ Revoked <- Revoked %>%
          Date2 = dmy(Date2),
          Date3 = dmy(Date3))
 
+# import nonprofits filing 990-N's (e-Postcards); size is 236 MB.
+temp3 <- tempfile()
+download.file("https://apps.irs.gov/pub/epostcard/data-download-epostcard.zip", 
+              temp3, mode = "wb")
+unzip(temp3, "data-download-epostcard.txt")
+unlink(temp3)
+Postcard <- read_delim("data-download-epostcard.txt", delim = "|", skip = 2,
+                       col_names = FALSE)
+
+# view Postcard data frame - 26 unnamed columns
+View(Postcard)
+
+# add names to columns in Postcard data frame
+colnames(Postcard)[1] <- 'EIN'
+colnames(Postcard)[2] <- 'TaxYr'
+colnames(Postcard)[3] <- 'Organization'
+colnames(Postcard)[4] <- 'RevTest'
+colnames(Postcard)[5] <- 'OutOfBiz'
+colnames(Postcard)[6] <- 'FYBegin'
+colnames(Postcard)[7] <- 'FYEnd'
+colnames(Postcard)[8] <- 'Website'
+colnames(Postcard)[9] <- 'Officer'
+colnames(Postcard)[10] <- 'Address'
+colnames(Postcard)[11] <- 'AddrSuffix'
+colnames(Postcard)[12] <- 'City'
+colnames(Postcard)[13] <- 'Blank1'
+colnames(Postcard)[14] <- 'State'
+colnames(Postcard)[15] <- 'Zip'
+colnames(Postcard)[16] <- 'Country'
+colnames(Postcard)[17] <- 'Address2'
+colnames(Postcard)[18] <- 'AddressSuffix2'
+colnames(Postcard)[19] <- 'City2'
+colnames(Postcard)[20] <- 'State2a'
+colnames(Postcard)[21] <- 'State2'
+colnames(Postcard)[22] <- 'Zip2'
+colnames(Postcard)[23] <- 'Country2'
+colnames(Postcard)[24] <- 'DBA'
+colnames(Postcard)[25] <- 'DBA2'
+colnames(Postcard)[26] <- 'DBA3'
+
+# convert Postcard date fields from character to date format
+Postcard <- Postcard %>% 
+  mutate(FYBegin = mdy(FYBegin),
+         FYEnd = mdy(FYEnd))
