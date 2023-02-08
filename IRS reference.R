@@ -3,7 +3,7 @@
 #################
 
 # this script imports, unzips and cleans tax-exempt organization files from IRS
-# the files range in size from 90 MB to 236 MB
+# the files range in size from 90 MB to 320 MB
 
 # set working directory, then load packages (must be installed first)
 setwd()
@@ -108,7 +108,8 @@ Postcard <- Postcard %>%
   mutate(FYBegin = mdy(FYBegin),
          FYEnd = mdy(FYEnd))
 
-# import Exempt Organization Business Master File - four regional files, total size 325 MB.
+# import Exempt Organization Business Master File - virtually all tax-exempt groups - four regional files, combined size 320 MB.
+# combine into a single file
 BizFile1 <- read_csv("https://www.irs.gov/pub/irs-soi/eo1.csv", col_types = "cccccccccccncccccncccccnnncc")
 BizFile2 <- read_csv("https://www.irs.gov/pub/irs-soi/eo2.csv", col_types = "cccccccccccncccccncccccnnncc")
 BizFile3 <- read_csv("https://www.irs.gov/pub/irs-soi/eo3.csv", col_types = "cccccccccccncccccncccccnnncc")
