@@ -39,6 +39,11 @@ Extract990_2021 <- Extract990_2021[,c(1,247,2:246)]
 dim(Extract990_2021)
 # [1] 1509  247
 
+# see what those mysterious column names really mean
+Doc990_2021 <- read_excel("21eofinextractdoc.xlsx", sheet = 1, skip = 2)
+
+View(Doc990_2021)
+
 # select and rename key fields, arrange by total revenue descending
 Extract990_2021a <- Extract990_2021 %>% 
   select(EIN, tax_pd, subseccd, 
@@ -61,8 +66,8 @@ Extract990_2021b <- Extract990_2021 %>%
          officer_biz = servasofficercd) %>% 
   filter(loan2officer == 'Y' | officer_biz == 'Y')
 
-# to identify nonprofits, join 990 statistical files with BusinessFileAll, the Exempt Organizations Business Master File created in IRS reference.R
-# demo only, one file is not loaded
+# to identify nonprofits by name, join 990 statistical files with BusinessFileAll, the Business Master File created in IRS reference.R
+# demo only, BizFileAll is not loaded
 
 # Extract990_2021c <- inner_join(select(BizFileAll, EIN, NAME, CITY, STATE),
 #                               select(Extract990_2021, EIN, tax_pd, subseccd, 
